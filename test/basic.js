@@ -79,14 +79,12 @@ describe('migrate', function () {
 
   it('should add a new migration', function (done) {
 
-    set.addMigration('add dogs', function (next) {
+    set.addMigration('add dogs', function () {
       db.pets.push({ name: 'simon' });
       db.pets.push({ name: 'suki' });
-      next();
-    }, function (next) {
+    }, function () {
       db.pets.pop();
       db.pets.pop();
-      next();
     });
 
     set.up(function (err) {
@@ -107,18 +105,16 @@ describe('migrate', function () {
 
   it('should emit events', function (done) {
 
-    set.addMigration('4-adjust-emails.js', function (next) {
+    set.addMigration('4-adjust-emails.js', function () {
       db.pets.forEach(function (pet) {
         if (pet.email)
           pet.email = pet.email.replace('learnboost.com', 'lb.com');
       });
-      next();
-    }, function (next) {
+    }, function () {
       db.pets.forEach(function (pet) {
         if (pet.email)
           pet.email = pet.email.replace('lb.com', 'learnboost.com');
       });
-      next();
     });
 
     var saved = 0;
